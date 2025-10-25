@@ -25,7 +25,10 @@ jobs:
         run: npm ci
       - name: Build
         env:
+          # GH Pages 子路径：/repo/；若仓库是 <user>.github.io，请改为 "/"
           VITE_BASE: "/${{ github.event.repository.name }}/"
+          # 通过仓库变量注入后端 API 基地址（可选）
+          VITE_API_BASE: ${{ vars.VITE_API_BASE }}
         run: npm run build
       - name: Add SPA 404 fallback
         run: cp dist/index.html dist/404.html
