@@ -1,0 +1,169 @@
+/* 全局样式与响应式排版方案（内容区域） */
+
+:root {
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --radius: 8px;
+  --gutter: 16px;
+  --content-padding: var(--space-3);
+  --section-gap: var(--space-3);
+  --content-bg: #f7faff;
+}
+
+html, body, #root { height: 100%; }
+body { margin: 0; background: var(--content-bg); -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+/* 头部与布局底色保持海蓝风格一致 */
+.ant-layout-header { background: #fff; border-bottom: 1px solid #eef2f5; padding: 0 var(--space-3); height: 64px; }
+.app-shell { background: var(--content-bg); }
+
+/* 内容区域包装：统一内边距、分段间距与居中容器 */
+.app-container { padding: 0; }
+.content-page {
+  padding: var(--content-padding);
+  display: grid;
+  gap: var(--section-gap);
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+/* 工具栏与过滤区：自动换行与间距统一 */
+.toolbar { display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; }
+.toolbar .ant-form-item { margin-bottom: 0; }
+
+/* 通用栅格：自动填充，随断点调整卡片最小宽度 */
+.grid-auto {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--gutter);
+}
+
+/* 表格在窄屏下横向滚动，不挤压内容 */
+.content-page .ant-table-wrapper { width: 100%; overflow: auto; }
+@media (max-width: 768px) {
+  .content-page .ant-table { min-width: 720px; }
+}
+
+/* 卡片风格统一：圆角与相邻卡片间隙 */
+.content-page .ant-card { border-radius: var(--radius); }
+
+/* 图表卡片在内容区内的默认高度建议（可在组件内覆盖） */
+.chart-default { height: 340px; }
+
+/* 响应式断点：适配 1920 / 1440 / 1366 / 768 / 375 */
+@media (max-width: 1919px) {
+  .content-page { max-width: 1440px; }
+}
+@media (max-width: 1440px) {
+  .content-page { max-width: 1280px; }
+}
+@media (max-width: 1366px) {
+  .content-page { max-width: 1152px; }
+}
+@media (max-width: 1024px) {
+  .content-page { max-width: 960px; }
+}
+@media (max-width: 768px) {
+  :root { --content-padding: var(--space-2); --section-gap: var(--space-2); }
+  .grid-auto { grid-template-columns: 1fr; }
+}
+@media (max-width: 480px) {
+  :root { --content-padding: var(--space-1); }
+}
+
+/* 指标卡点击态与悬停效果，满足可点击区域与无刷新跳转的视觉要求 */
+.metric-card {
+  cursor: pointer;
+  user-select: none;
+  min-height: 88px; /* 保证不小于44×44 */
+  transition: box-shadow 200ms ease, transform 200ms ease;
+}
+.metric-card:hover {
+  box-shadow: 0 8px 24px rgba(14, 165, 233, 0.18);
+  transform: translateY(-2px);
+}
+.metric-card:active {
+  transform: translateY(0);
+}
+.metric-card:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.35);
+}
+.op-link {
+  cursor: pointer;
+  color: var(--text-color, #0b1e2f);
+}
+.op-link:hover { color: #0EA5E9; }
+
+/* 统一操作列按钮视觉与交互：详情/评分报告 */
+.op-action {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 6px;
+  color: #0EA5E9;
+  background-color: transparent;
+  cursor: pointer;
+  line-height: 1.6;
+  text-decoration: none;
+  transition: color 200ms ease, background-color 200ms ease, box-shadow 200ms ease, transform 120ms ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.op-action:hover {
+  color: #0891c0;
+  background-color: rgba(14, 165, 233, 0.08);
+  box-shadow: 0 2px 8px rgba(14, 165, 233, 0.18);
+}
+
+.op-action:active {
+  transform: translateY(0.5px);
+  background-color: rgba(14, 165, 233, 0.12);
+}
+
+.op-action:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.35);
+}
+
+/* 查询条件内联布局：宽屏单行，窄屏自动换行与横向滚动 */
+.filters-inline {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  flex-wrap: wrap; /* 允许在筛选项过多时换到第二行 */
+  overflow-x: auto; /* 保留横向滚动以避免拥挤 */
+}
+/* 保持表单项垂直居中与一致高度 */
+.filters-inline .ant-form-item,
+.filters-inline .filter-item {
+  display: flex;
+  align-items: center;
+  height: 40px; /* 统一容器高度 */
+}
+.filters-inline .ant-form-item-label,
+.filters-inline .ant-form-item-control {
+  display: flex;
+  align-items: center;
+}
+/* 紧凑布局避免垂直错位 */
+.filters-inline .ant-form-item { margin-bottom: 0; }
+
+@media (max-width: 1024px) {
+  .filters-inline { flex-wrap: wrap; }
+}
+
+/* 状态列显示优化与打印视图支持 */
+.status-cell { display: flex; align-items: center; gap: 8px; overflow: visible; }
+.status-cell .ant-steps {
+  min-width: 0;
+  max-width: 100%;
+}
+@media screen {
+  .status-cell .status-text-print { display: none; }
+}
+@media print {
+  .status-cell .ant-steps { display: none !important; }
+  .status-cell .status-text-print { display: inline !important; }
+}
